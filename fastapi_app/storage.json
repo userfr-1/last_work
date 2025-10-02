@@ -1,0 +1,13 @@
+[
+    {
+        "id": 111,
+        "full_name": "M.user B",
+        "email": "q303641@gmail.com",
+        "phone_number": "+998(90)0909009",
+        "group": [
+            "math"
+        ],
+        "is_line": false,
+        "descriptions": "nope"
+    }
+]
