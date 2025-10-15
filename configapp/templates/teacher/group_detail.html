@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Guruh tafsiloti{% endblock %}
+{% block content %}
+<h3>Guruh: {{ group.title }}</h3>
+<p class="text-muted">Boshlanish: {{ group.start_date }} — Tugash: {{ group.end_time }}</p>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card mb-3">
+      <div class="card-header">Guruh a'zolari</div>
+      <div class="card-body">
+        {% if students %}
+          <ul class="list-group">
+            {% for s in students %}
+              <li class="list-group-item d-flex justify-content-between">
+                <div>
+                  <strong>{{ s.full_name }}</strong><br>
+                  <small class="text-muted">{{ s.user.email|default:s.user.phone_number }}</small>
+                </div>
+                <div>
+                  <a href="#" class="btn btn-sm btn-outline-secondary">Profil</a>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted">O‘quvchilar topilmadi.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card mb-3">
+      <div class="card-header">Guruh darslari</div>
+      <div class="card-body">
+        {% if lessons %}
+          <ul class="list-group">
+            {% for l in lessons %}
+              <li class="list-group-item d-flex justify-content-between">
+                <div>
+                  <strong>{{ l.title }}</strong><br>
+                  <small class="text-muted">{{ l.description|default:"Tavsif yo'q" }}</small>
+                </div>
+                <div>
+                  <a href="{% url 'lesson_edit' l.id %}" class="btn btn-sm btn-warning">Tahrirlash</a>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted">Darslar mavjud emas.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<a href="{% url 'teacher_dashboard' %}" class="btn btn-outline-secondary mt-3">Orqaga</a>
+{% endblock %}

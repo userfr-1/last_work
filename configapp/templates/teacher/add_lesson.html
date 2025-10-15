@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Yangi dars qo'shish{% endblock %}
+{% block content %}
+<h3>Yangi dars qo‘shish</h3>
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+  <div class="mb-3">
+    <label class="form-label">Sarlavha</label>
+    <input type="text" name="title" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Tavsif</label>
+    <textarea name="description" class="form-control" rows="3"></textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Guruh</label>
+    <select name="group" class="form-select" required>
+      {% for g in groups %}
+        <option value="{{ g.id }}">{{ g.title }} — {{ g.course.title }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Video URL (ixtiyoriy)</label>
+    <input type="url" name="video_url" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Fayl</label>
+    <input type="file" name="file" class="form-control">
+  </div>
+  <button class="btn btn-success">Saqlash</button>
+  <a href="{% url 'teacher_dashboard' %}" class="btn btn-secondary">Bekor qilish</a>
+</form>
+{% endblock %}

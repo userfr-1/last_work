@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Uyga vazifa qo'shish{% endblock %}
+{% block content %}
+<h3>“{{ lesson.title }}” uchun uyga vazifa qo‘shish</h3>
+<form method="post">{% csrf_token %}
+  <div class="mb-3">
+    <label class="form-label">Sarlavha</label>
+    <input type="text" name="title" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Tavsif</label>
+    <textarea name="description" class="form-control" rows="4"></textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Muddati</label>
+    <input type="date" name="deadline" class="form-control">
+  </div>
+  <button class="btn btn-success">Saqlash</button>
+  <a href="{% url 'teacher_dashboard' %}" class="btn btn-secondary">Bekor</a>
+</form>
+{% endblock %}

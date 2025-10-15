@@ -2,14 +2,12 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.core.validators import RegexValidator
 
-
 class BaseModel(models.Model):
-    created_ed = models.DateField(auto_now_add=True)
-    updated_ed = models.DateField(auto_now=True)
+    created_ed = models.DateTimeField(auto_now_add=True)
+    updated_ed = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
-
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -17,7 +15,10 @@ class CustomUserManager(BaseUserManager):
             raise ValueError("Email kiritilishi kerak")
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
-        user.set_password(password)
+        if password:
+            user.set_password(password)
+        else:
+            user.set_unusable_password()
         user.save(using=self._db)
         return user
 
@@ -25,6 +26,7 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_admin', True)
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError("Staff uchun is_staff=True bo‘lishi kerak")
@@ -33,39 +35,21 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
-
 class User(AbstractBaseUser, PermissionsMixin):
     phone_regex = RegexValidator(
         regex=r'^\+9989\d{8}$',
         message="Telefon raqam +9989XXXXXXXX formatida bo‘lishi kerak"
     )
-
-    phone_number = models.CharField(
-        validators=[phone_regex],
-        max_length=13,
-        null=True,
-        blank=True
-    )
+    phone_number = models.CharField(validators=[phone_regex], max_length=13, null=True, blank=True)
     email = models.EmailField(unique=True, null=True, blank=True)
-    password = models.CharField(max_length=128)
-
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_student = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
 
-    # override qilinayotgan joy
-    groups = models.ManyToManyField(
-        'auth.Group',
-        related_name="custom_user_groups",
-        blank=True
-    )
-    user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        related_name="custom_user_permissions",
-        blank=True
-    )
+    groups = models.ManyToManyField('auth.Group', related_name="custom_user_groups", blank=True)
+    user_permissions = models.ManyToManyField('auth.Permission', related_name="custom_user_permissions", blank=True)
 
     objects = CustomUserManager()
 

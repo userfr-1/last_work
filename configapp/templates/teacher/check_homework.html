@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Topshiriqni tekshirish{% endblock %}
+{% block content %}
+<h3>Topshiriqni ko‘rish va baholash</h3>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <p><strong>O‘quvchi:</strong> {{ upload.student.full_name }}</p>
+    <p><strong>Vazifa:</strong> {{ upload.homework.title }}</p>
+    <p><strong>Matn:</strong> {{ upload.text|default:"-" }}</p>
+    <p><strong>Fayl:</strong>
+      {% if upload.file %}
+        <a href="{{ upload.file.url }}" download>Yuklab olish</a>
+      {% else %}
+        <span class="text-muted">Fayl yo‘q</span>
+      {% endif %}
+    </p>
+    <p><strong>Hozirgi holat:</strong> {{ upload.get_status_display }}</p>
+  </div>
+</div>
+
+<form method="post">{% csrf_token %}
+  <div class="mb-3">
+    <label class="form-label">Holat</label>
+    <select name="status" class="form-select">
+      <option value="pending" {% if upload.status == 'pending' %}selected{% endif %}>Kutmoqda</option>
+      <option value="accepted" {% if upload.status == 'accepted' %}selected{% endif %}>Qabul qilingan</option>
+      <option value="not_submitted" {% if upload.status == 'not_submitted' %}selected{% endif %}>Berilmagan</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Baho (son)</label>
+    <input type="number" name="mark" value="{{ upload.mark }}" class="form-control" min="0" max="100">
+  </div>
+
+  <button class="btn btn-success">✅ Saqlash va belgilash</button>
+  <a href="{% url 'homework_list' %}" class="btn btn-secondary">⬅️ Orqaga</a>
+</form>
+{% endblock %}

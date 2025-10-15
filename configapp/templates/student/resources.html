@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Resurslar{% endblock %}
+{% block content %}
+<h3>Kurs resurslari</h3>
+
+{% if lessons %}
+  <div class="list-group">
+    {% for l in lessons %}
+      {% for r in l.group.course.resources.all %}
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ r.title }}</strong>
+            <div class="small text-muted">{{ r.uploaded_at|date:"d.m.Y H:i" }}</div>
+          </div>
+          <div>
+            {% if r.file %}
+              <a href="{{ r.file.url }}" class="btn btn-sm btn-outline-primary">📥 Yuklab olish</a>
+            {% elif r.url %}
+              <a href="{{ r.url }}" class="btn btn-sm btn-outline-secondary" target="_blank">🔗 Ochiq havola</a>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="text-muted">Sizning guruhlaringiz uchun resurslar yo‘q.</p>
+{% endif %}
+
+<a href="{% url 'student_dashboard' %}" class="btn btn-secondary mt-3">Orqaga</a>
+{% endblock %}

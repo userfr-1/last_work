@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Ustoz hisobotlari{% endblock %}
+{% block content %}
+<h3>Hisobotlar</h3>
+
+<div class="card mb-3">
+  <div class="card-header">Davomat foizi</div>
+  <div class="card-body">
+    {% if lessons %}
+      <ul class="list-group">
+        {% for l in lessons %}
+          <li class="list-group-item d-flex justify-content-between">
+            <div>
+              <strong>{{ l.title }}</strong> — {{ l.group.title }}
+            </div>
+            <div>
+              <span class="badge bg-info">-- %</span>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">Darslar topilmadi.</p>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-header">Topshiriq statistikasi</div>
+  <div class="card-body">
+    {% if uploads %}
+      <table class="table">
+        <thead><tr><th>O‘quvchi</th><th>Vazifa</th><th>Holat</th></tr></thead>
+        <tbody>
+          {% for u in uploads %}
+            <tr>
+              <td>{{ u.student.full_name }}</td>
+              <td>{{ u.homework.title }}</td>
+              <td>{{ u.get_status_display }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="text-muted">Topshiriqlar yo‘q.</p>
+    {% endif %}
+  </div>
+</div>
+
+<a href="{% url 'teacher_dashboard' %}" class="btn btn-secondary">Orqaga</a>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}To'lovlar{% endblock %}
+{% block content %}
+<h3>To‘lovlarim</h3>
+{% if payments %}
+  <table class="table">
+    <thead><tr><th>Summasi</th><th>Usuli</th><th>Vaqti</th><th>Holat</th></tr></thead>
+    <tbody>
+      {% for p in payments %}
+        <tr>
+          <td>{{ p.amount }}</td>
+          <td>{{ p.method|default:"-" }}</td>
+          <td>{{ p.paid_at|date:"d.m.Y H:i" }}</td>
+          <td>{% if p.invoice.paid %}<span class="badge bg-success">To‘langan</span>{% else %}<span class="badge bg-warning">To‘lanmagan</span>{% endif %}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p class="text-muted">To‘lovlar topilmadi.</p>
+{% endif %}
+<a href="{% url 'student_dashboard' %}" class="btn btn-secondary">Orqaga</a>
+{% endblock %}

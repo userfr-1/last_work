@@ -1,0 +1,238 @@
+[
+  {
+    "model": "configapp.user",
+    "pk": 1,
+    "fields": {
+      "email": "teacher@gmail.com",
+      "phone_number": "+998901112233",
+      "is_active": true,
+      "is_staff": true,
+      "is_superuser": false,
+      "is_teacher": true,
+      "is_student": false,
+      "is_admin": false,
+      "password": "123"
+    }
+  },
+  {
+    "model": "configapp.user",
+    "pk": 2,
+    "fields": {
+      "email": "student@gmail.com",
+      "phone_number": "+998901112244",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "is_teacher": false,
+      "is_student": true,
+      "is_admin": false,
+      "password": "123"
+    }
+  },
+  {
+    "model": "configapp.departments",
+    "pk": 1,
+    "fields": {
+      "title": "Backend Development",
+      "is_active": true,
+      "descriptions": "Backend bo‘limi",
+      "created_ed": "2025-10-15T12:00:00Z",
+      "updated_ed": "2025-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "configapp.course",
+    "pk": 1,
+    "fields": {
+      "title": "Django Web Development",
+      "descriptions": "Python va Django orqali web loyihalar yaratish",
+      "created_ed": "2025-10-15T12:00:00Z",
+      "updated_ed": "2025-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "configapp.rooms",
+    "pk": 1,
+    "fields": {
+      "title": "Room A",
+      "descriptions": "1-qavat, 101-xona",
+      "created_ed": "2025-10-15T12:00:00Z",
+      "updated_ed": "2025-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "configapp.tabletype",
+    "pk": 1,
+    "fields": {
+      "title": "Offline Dars",
+      "descriptions": "Ofisda o‘tkaziladigan darslar",
+      "created_ed": "2025-10-15T12:00:00Z",
+      "updated_ed": "2025-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "configapp.table",
+    "pk": 1,
+    "fields": {
+      "start_time": "2025-10-16T14:00:00Z",
+      "end_time": "2025-10-16T16:00:00Z",
+      "room": 1,
+      "type": 1,
+      "descriptions": "Django 101 uchun jadval",
+      "created_ed": "2025-10-15T12:00:00Z",
+      "updated_ed": "2025-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "configapp.teacher",
+    "pk": 1,
+    "fields": {
+      "full_name": "Ustoz Alisher",
+      "user": 1,
+      "departments": [1],
+      "course": [1],
+      "descriptions": "Senior Django o‘qituvchisi",
+      "created_ed": "2025-10-15T12:00:00Z",
+      "updated_ed": "2025-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "configapp.groupstudent",
+    "pk": 1,
+    "fields": {
+      "title": "Django 101",
+      "course": 1,
+      "teacher": [1],
+      "table": 1,
+      "start_date": "2025-10-10",
+      "end_time": "2026-01-10",
+      "descriptions": "Backend uchun asosiy guruh",
+      "created_ed": "2025-10-15T12:00:00Z",
+      "updated_ed": "2025-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "configapp.student",
+    "pk": 1,
+    "fields": {
+      "full_name": "O‘quvchi Diyor",
+      "user": 2,
+      "group": [1],
+      "is_line": true,
+      "descriptions": "Frontend yo‘nalishida o‘qiydi",
+      "created_ed": "2025-10-15T12:00:00Z",
+      "updated_ed": "2025-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "configapp.parents",
+    "pk": 1,
+    "fields": {
+      "student": 1,
+      "full_name": "Diyorning otasi",
+      "phone_number": "+998901112255",
+      "address": "Toshkent shahri",
+      "descriptions": "Uyda qo‘llab-quvvatlaydi",
+      "created_ed": "2025-10-15T12:00:00Z",
+      "updated_ed": "2025-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "configapp.homework",
+    "pk": 1,
+    "fields": {
+      "title": "Django loyihasi",
+      "description": "Uyga vazifa: Django loyihasini yaratish",
+      "deadline": "2025-10-30",
+      "is_active": true,
+      "created_ed": "2025-10-15T12:00:00Z",
+      "updated_ed": "2025-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "configapp.lesson",
+    "pk": 1,
+    "fields": {
+      "title": "Django kirish darsi",
+      "description": "Django loyihasini yaratish, settings va urls bilan ishlash.",
+      "group": 1,
+      "teacher": 1,
+      "homework": 1,
+      "video_url": "https://www.youtube.com/watch?v=example",
+      "start_time": "14:00:00",
+      "end_time": "16:00:00",
+      "created_ed": "2025-10-15T12:00:00Z",
+      "updated_ed": "2025-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "configapp.invoice",
+    "pk": 1,
+    "fields": {
+      "student": 1,
+      "group": 1,
+      "amount": "350000.00",
+      "issued_at": "2025-10-15T12:00:00Z",
+      "due_date": "2025-10-30",
+      "paid": true,
+      "description": "1-oy to‘lov",
+      "external_id": "INV001",
+      "created_ed": "2025-10-15T12:00:00Z",
+      "updated_ed": "2025-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "configapp.payment",
+    "pk": 1,
+    "fields": {
+      "invoice": 1,
+      "amount": "350000.00",
+      "paid_at": "2025-10-15T12:10:00Z",
+      "method": "Naqd",
+      "transaction_id": "TXN12345",
+      "created_ed": "2025-10-15T12:00:00Z",
+      "updated_ed": "2025-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "configapp.schedule",
+    "pk": 1,
+    "fields": {
+      "group": 1,
+      "day": "Dushanba",
+      "start_time": "14:00:00",
+      "end_time": "16:00:00",
+      "location": "Room A",
+      "created_ed": "2025-10-15T12:00:00Z",
+      "updated_ed": "2025-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "configapp.attendance",
+    "pk": 1,
+    "fields": {
+      "student": 1,
+      "schedule": 1,
+      "date": "2025-10-15",
+      "present": true,
+      "note": "Darsda qatnashdi",
+      "created_ed": "2025-10-15T12:00:00Z",
+      "updated_ed": "2025-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "configapp.resource",
+    "pk": 1,
+    "fields": {
+      "course": 1,
+      "title": "Django Docs",
+      "url": "https://docs.djangoproject.com/en/5.0/",
+      "uploaded_by": 1,
+      "uploaded_at": "2025-10-15T12:00:00Z",
+      "created_ed": "2025-10-15T12:00:00Z",
+      "updated_ed": "2025-10-15T12:00:00Z"
+    }
+  }
+]
+
+

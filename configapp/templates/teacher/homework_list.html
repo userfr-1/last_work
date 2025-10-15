@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Topshiriqlar ro'yxati{% endblock %}
+{% block content %}
+<h3>O‘quvchilar topshirgan vazifalar</h3>
+<table class="table table-hover">
+  <thead>
+    <tr><th>O‘quvchi</th><th>Vazifa</th><th>Fayl</th><th>Holat</th><th>Baho</th><th>Amal</th></tr>
+  </thead>
+  <tbody>
+    {% for u in uploads %}
+      <tr>
+        <td>{{ u.student.full_name }}</td>
+        <td>{{ u.homework.title }}</td>
+        <td>
+          {% if u.file %}
+            <a href="{{ u.file.url }}" download>Yuklab olish</a>
+          {% elif u.photo %}
+            <a href="{{ u.photo.url }}" download>Rasm</a>
+          {% else %}
+            -
+          {% endif %}
+        </td>
+        <td>{{ u.get_status_display }}</td>
+        <td>{{ u.mark|default:"-" }}</td>
+        <td><a href="{% url 'check_homework' u.id %}" class="btn btn-sm btn-info">Ko‘rib baholash</a></td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="6" class="text-center text-muted">Topshiriqlar yo‘q</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href="{% url 'teacher_dashboard' %}" class="btn btn-secondary">Orqaga</a>
+{% endblock %}

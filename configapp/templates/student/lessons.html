@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Darslar{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  {% if lessons %}
+    <h3 class="mb-4 text-center">{{ lessons.0.group.title }} — Darslar</h3>
+  {% else %}
+    <h3 class="mb-4 text-center">Darslar</h3>
+  {% endif %}
+
+  {% if lessons %}
+    <div class="row">
+      {% for lesson in lessons %}
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card shadow-sm h-100 border-0 rounded-3">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title fw-bold text-primary">{{ lesson.title }}</h5>
+              <p class="card-text text-muted mb-3">{{ lesson.description|default:"Tavsif yo‘q" }}</p>
+
+              <div class="mt-auto">
+                {% if lesson.video_url %}
+                  <a href="{{ lesson.video_url }}" target="_blank" class="btn btn-sm btn-primary me-1">
+                    🎥 Videoni ko‘rish
+                  </a>
+                {% endif %}
+                {% if lesson.homework %}
+                  <a href="{% url 'homework_upload' lesson.homework.id %}" class="btn btn-sm btn-success me-1">
+                    📘 Uyga vazifa
+                  </a>
+                {% endif %}
+                <a href="{% url 'lesson_detail' lesson.id %}" class="btn btn-sm btn-outline-info">
+                  🔍 Batafsil
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="text-center mt-5">
+      <p class="text-muted fs-5">Sizga hali darslar biriktirilmagan 😕</p>
+    </div>
+  {% endif %}
+
+  <div class="text-center mt-4">
+    <a href="{% url 'student_dashboard' %}" class="btn btn-outline-secondary px-4">
+      ⬅ Orqaga qaytish
+    </a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Mening davomatim{% endblock %}
+{% block content %}
+<h3>Davomat tarixi</h3>
+{% if student %}
+  {% comment %} Bu yerda attendance ob'ektlarini student modeliga bog‘lab olinishi kerak {% endcomment %}
+  {% if attendances %}
+    <table class="table table-striped">
+      <thead><tr><th>Sana</th><th>Dars</th><th>Holat</th></tr></thead>
+      <tbody>
+        {% for a in attendances %}
+          <tr>
+            <td>{{ a.date }}</td>
+            <td>{{ a.schedule.group.title }}</td>
+            <td>{% if a.present %}Keldi{% else %}Kelmagan{% endif %}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="text-muted">Davomat yozuvlari topilmadi.</p>
+  {% endif %}
+{% else %}
+  <p class="text-muted">Student ma'lumotlari topilmadi.</p>
+{% endif %}
+<a href="{% url 'student_dashboard' %}" class="btn btn-secondary mt-3">Orqaga</a>
+{% endblock %}

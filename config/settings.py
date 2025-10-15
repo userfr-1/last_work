@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'rest_framework_simplejwt',
-
+    'widget_tweaks',
 ]
 
 
@@ -94,6 +94,15 @@ SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False,
 }
 
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -170,7 +179,7 @@ ROOT_URLCONF = 'config.urls'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+AUTH_USER_MODEL = 'configapp.User'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -180,3 +189,14 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'bsmvzq@gmail.com'
 EMAIL_HOST_PASSWORD = 'qnyw nuoo fmvb kldk'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [BASE_DIR / "configapp" / "static"]
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'student_dashboard'
+LOGOUT_REDIRECT_URL = 'login'

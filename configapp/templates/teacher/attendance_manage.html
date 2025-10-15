@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Davomatni boshqarish{% endblock %}
+{% block content %}
+<h3>Davomatni boshqarish</h3>
+<form method="post" action="{% url 'attendance_manage' %}">{% csrf_token %}
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <label class="form-label">Guruh</label>
+      <select name="group" class="form-select">
+        {% for g in groups %}
+          <option value="{{ g.id }}">{{ g.title }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Sana</label>
+      <input type="date" name="date" class="form-control" required>
+    </div>
+    <div class="col-md-5 d-flex align-items-end">
+      <button class="btn btn-primary">Davomatni tayyorlash</button>
+    </div>
+  </div>
+</form>
+
+{% if attendance_students %}
+  <form method="post" action="{% url 'attendance_update' %}">{% csrf_token %}
+    <input type="hidden" name="group" value="{{ current_group.id }}">
+    <input type="hidden" name="date" value="{{ current_date }}">
+    <table class="table">
+      <thead><tr><th>O‘quvchi</th><th>Keldi</th></tr></thead>
+      <tbody>
+        {% for s in attendance_students %}
+          <tr>
+            <td>{{ s.full_name }}</td>
+            <td><input type="checkbox" name="present_{{ s.id }}" {% if s.is_present %}checked{% endif %}></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <button class="btn btn-success">Saqlash</button>
+  </form>
+{% endif %}
+
+<a href="{% url 'teacher_dashboard' %}" class="btn btn-secondary mt-3">Orqaga</a>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Darsni tahrirlash{% endblock %}
+{% block content %}
+<h3>Darsni tahrirlash</h3>
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+  <div class="mb-3">
+    <label class="form-label">Sarlavha</label>
+    <input type="text" name="title" value="{{ lesson.title }}" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Tavsif</label>
+    <textarea name="description" class="form-control" rows="4">{{ lesson.description }}</textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Video URL</label>
+    <input type="url" name="video_url" value="{{ lesson.video_url }}" class="form-control">
+  </div>
+  {% if lesson.file %}
+    <div class="mb-3">
+      <label class="form-label">Mavjud fayl</label>
+      <div><a href="{{ lesson.file.url }}">Faylni ochish</a></div>
+    </div>
+  {% endif %}
+  <button class="btn btn-primary">Yangilash</button>
+  <a href="{% url 'teacher_dashboard' %}" class="btn btn-secondary">Orqaga</a>
+</form>
+{% endblock %}

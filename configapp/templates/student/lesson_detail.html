@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Dars tafsiloti{% endblock %}
+{% block content %}
+<h3>{{ lesson.title }}</h3>
+<p class="text-muted">Guruh: {{ lesson.group.title }}</p>
+<p>{{ lesson.description|default:"Tavsif yo‘q" }}</p>
+
+{% if lesson.video_url %}
+  <div class="mb-3">
+    <a href="{{ lesson.video_url }}" target="_blank" class="btn btn-primary">Video ko‘rish</a>
+  </div>
+{% endif %}
+
+{% if lesson.homework %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5>Uyga vazifa: {{ lesson.homework.title }}</h5>
+      <p>{{ lesson.homework.description|default:"Tavsif yo‘q" }}</p>
+      <p><strong>Muddati:</strong> {{ lesson.homework.deadline|default:"-" }}</p>
+      <a href="{% url 'homework_upload' lesson.homework.id %}" class="btn btn-success">Topshirish</a>
+    </div>
+  </div>
+{% endif %}
+
+<a href="{% url 'student_lessons' %}" class="btn btn-secondary">Orqaga</a>
+{% endblock %}

@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% block title %}Ustoz - Dashboard{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>👨‍🏫 Ustoz Dashboard</h2>
+  <div>
+    <a href="{% url 'lesson_add' %}" class="btn btn-success btn-sm">+ Yangi dars</a>
+    <a href="{% url 'homework_list' %}" class="btn btn-outline-primary btn-sm">Topshiriqlar</a>
+    <a href="{% url 'attendance_manage' %}" class="btn btn-outline-secondary btn-sm">Davomat</a>
+    <a href="{% url 'teacher_report' %}" class="btn btn-outline-info btn-sm">Hisobot</a>
+  </div>
+</div>
+
+<div class="row">
+  <!-- LEFT SIDE -->
+  <div class="col-lg-6">
+    <!-- Mening guruhlarim -->
+    <div class="card mb-3">
+      <div class="card-header">Mening guruhlarim</div>
+      <div class="card-body">
+        {% if groups %}
+          <ul class="list-group">
+            {% for g in groups %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>{{ g.title }}</strong><br>
+                  <small class="text-muted">{{ g.course.title }}</small>
+                </div>
+                <div>
+                  <a href="{% url 'teacher_group_detail' g.id %}" class="btn btn-sm btn-outline-primary">A'zolar</a>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted">Sizga biriktirilgan guruhlar topilmadi.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Resurslar -->
+    <div class="card mb-3">
+  <div class="card-header">Resurslar</div>
+  <div class="card-body">
+    {% if resources %}
+      <ul class="list-group">
+        {% for r in resources %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>{{ r.title }} <small class="text-muted">({{ r.course.title }})</small></div>
+            <div>
+              {% if r.file %}
+                <a href="{{ r.file.url }}" class="btn btn-sm btn-outline-secondary">Yuklab olish</a>
+              {% else %}
+                <span class="text-muted">Fayl yo‘q</span>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">Hech qanday resurs yuklanmagan.</p>
+    {% endif %}
+  </div>
+</div>
+
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="col-lg-6">
+    <!-- Darslar -->
+    <div class="card mb-3">
+      <div class="card-header">Mening darslarim</div>
+      <div class="card-body">
+        {% if lessons %}
+          <table class="table table-striped">
+            <thead>
+              <tr><th>Nomi</th><th>Guruh</th><th>Video</th><th>Amallar</th></tr>
+            </thead>
+            <tbody>
+            {% for lesson in lessons %}
+              <tr>
+                <td>{{ lesson.title }}</td>
+                <td>{{ lesson.group.title }}</td>
+                <td>
+                  {% if lesson.video_url %}
+                    <a href="{{ lesson.video_url }}" target="_blank">Ko‘rish</a>
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{% url 'lesson_edit' lesson.id %}" class="btn btn-sm btn-warning">Tahrirlash</a>
+                  <a href="{% url 'lesson_delete' lesson.id %}" class="btn btn-sm btn-danger">O‘chirish</a>
+                  <a href="{% url 'homework_add' lesson.id %}" class="btn btn-sm btn-secondary">Homework</a>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p class="text-muted">Hech qanday dars mavjud emas.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Oxirgi topshiriqlar -->
+    <div class="card mb-3">
+      <div class="card-header">Oxirgi topshiriqlar</div>
+      <div class="card-body">
+        {% if homework_uploads %}
+          <ul class="list-group">
+            {% for u in homework_uploads|slice:":6" %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>{{ u.student.full_name }}</strong>
+                  <div class="small text-muted">{{ u.homework.title }}</div>
+                </div>
+                <div>
+                  <span class="badge bg-
+                    {% if u.status == 'accepted' %}
+                      success
+                    {% elif u.status == 'rejected' %}
+                      danger
+                    {% else %}
+                      warning
+                    {% endif %}
+                  ">
+                    {{ u.get_status_display }}
+                  </span>
+                  <a href="{% url 'check_homework' u.id %}" class="btn btn-sm btn-outline-info ms-2">Ko‘rib baholash</a>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted">Topshirilgan vazifalar yo‘q.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Uyga vazifa topshirish{% endblock %}
+{% block content %}
+<h3>“{{ homework.title }}” uchun topshiriq yuborish</h3>
+
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+  <div class="mb-3">
+    <label class="form-label">Izoh</label>
+    <textarea name="text" class="form-control" rows="4"></textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Fayl (.zip, .pdf, .docx va boshq.)</label>
+    <input type="file" name="file" class="form-control">
+  </div>
+  <button class="btn btn-primary">Yuborish</button>
+  <a href="{% url 'student_dashboard' %}" class="btn btn-secondary">Orqaga</a>
+</form>
+{% endblock %}

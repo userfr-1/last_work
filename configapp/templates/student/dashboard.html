@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}Student Dashboard{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>👨‍🎓 O‘quvchi Dashboard</h2>
+  <div>
+    <a href="{% url 'student_lessons' %}" class="btn btn-outline-primary btn-sm">Darslar</a>
+    <a href="{% url 'student_invoice' %}" class="btn btn-outline-success btn-sm">To‘lovlar</a>
+    <a href="{% url 'student_attendance' %}" class="btn btn-outline-secondary btn-sm">Davomat</a>
+    <a href="{% url 'student_resources' %}" class="btn btn-outline-info btn-sm">Resurslar</a>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="card mb-3">
+      <div class="card-header">Sizning guruh(lar)ingiz</div>
+      <div class="card-body">
+        {% if student.group.all %}
+  <ul class="list-group">
+    {% for g in student.group.all %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ g.title }}</strong>
+          <div class="small text-muted">{{ g.course.title }}</div>
+        </div>
+        <div>
+          <a href="{% url 'student_group_detail' g.id %}" class="btn btn-sm btn-outline-primary">Guruhga o'tish</a>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p class="text-muted">Siz hali guruhga biriktirilmagansiz.</p>
+{% endif %}
+
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header">Yaqin darslar</div>
+      <div class="card-body">
+        {% if lessons %}
+          <ul class="list-group">
+            {% for l in lessons|slice:":6" %}
+              <li class="list-group-item">
+                <strong>{{ l.title }}</strong> — <small class="text-muted">{{ l.group.title }}</small><br>
+                <div class="mt-1">
+                  {% if l.video_url %}
+                    <a href="{{ l.video_url }}" target="_blank" class="btn btn-sm btn-outline-secondary">Video</a>
+                  {% endif %}
+                  {% if l.homework %}
+                    <a href="{% url 'homework_upload' l.homework.id %}" class="btn btn-sm btn-primary ms-1">Uyga vazifa topshirish</a>
+                  {% endif %}
+                  <a href="{% url 'lesson_detail' l.id %}" class="btn btn-sm btn-outline-info ms-1">Batafsil</a>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted">Darslar mavjud emas.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card mb-3">
+      <div class="card-header">Mening topshiriqlarim</div>
+      <div class="card-body">
+        {% if homework_uploads %}
+          <ul class="list-group">
+            {% for hu in homework_uploads|slice:":5" %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  {{ hu.homework.title }}<br>
+                  <small class="text-muted">{{ hu.get_status_display }}</small>
+                </div>
+                <div>
+                  <span class="badge bg-secondary">{{ hu.mark|default:"-" }}</span>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted">Siz hali topshiriq yubormagansiz.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header">Tezkor havolalar</div>
+      <div class="card-body">
+        <a href="{% url 'student_resources' %}" class="d-block mb-2">📂 Resurslar</a>
+        <a href="{% url 'student_invoice' %}" class="d-block mb-2">💳 To‘lovlar</a>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
