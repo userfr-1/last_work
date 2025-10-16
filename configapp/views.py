@@ -18,33 +18,67 @@ def register_view(request):
         form = UserRegisterForm()
     return render(request, "auth/register.html", {"form": form})
 
+#
+# def login_view(request):
+#
+#     if request.method == "POST":
+#         form = UserLoginForm(request.POST)
+#         if form.is_valid():
+#             email = form.cleaned_data.get("email")
+#             password = form.cleaned_data.get("password")
+#             user = authenticate(email=email, password=password)
+#
+#             if user is not None:
+#                 login(request, user)
+#                 messages.success(request, f"Xush kelibsiz, {user.email}!")
+#
+#
+#                 if user.is_teacher:
+#                     return redirect("teacher_dashboard")
+#                 elif user.is_student:
+#                     return redirect("student_dashboard")
+#                 elif user.is_admin:
+#                     return redirect("/admin/")
+#             else:
+#                 messages.error(request, "Email yoki parol noto‘g‘ri!")
+#     else:
+#         form = UserLoginForm()
+#
+#     return render(request, "auth/login.html", {"form": form})
+#
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from .forms import UserLoginForm
 
 def login_view(request):
-
     if request.method == "POST":
         form = UserLoginForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data.get("email")
-            password = form.cleaned_data.get("password")
-            user = authenticate(email=email, password=password)
+            email = form.cleaned_data["email"]
+            password = form.cleaned_data["password"]
+
+            user = authenticate(request, email=email, password=password)
 
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Xush kelibsiz, {user.email}!")
 
-
-                if user.is_teacher:
+                if getattr(user, "is_teacher", False):
                     return redirect("teacher_dashboard")
-                elif user.is_student:
+                elif getattr(user, "is_student", False):
                     return redirect("student_dashboard")
-                elif user.is_admin:
+                elif getattr(user, "is_admin", False) or user.is_superuser:
                     return redirect("/admin/")
+                else:
+                    return redirect("/")  # fallback
             else:
                 messages.error(request, "Email yoki parol noto‘g‘ri!")
     else:
         form = UserLoginForm()
 
     return render(request, "auth/login.html", {"form": form})
+
 
 
 @login_required
