@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
-{% block title %}Uyga vazifa qo'shish{% endblock %}
+{% block title %}Uyga vazifa qo‘shish{% endblock %}
+
 {% block content %}
 <h3>“{{ lesson.title }}” uchun uyga vazifa qo‘shish</h3>
-<form method="post">{% csrf_token %}
+
+<form method="post" action="">
+  {% csrf_token %}
   <div class="mb-3">
     <label class="form-label">Sarlavha</label>
     <input type="text" name="title" class="form-control" required>
@@ -15,7 +18,7 @@
     <label class="form-label">Muddati</label>
     <input type="date" name="deadline" class="form-control">
   </div>
-  <button class="btn btn-success">Saqlash</button>
+  <button class="btn btn-success" type="submit">Saqlash</button>
   <a href="{% url 'teacher_dashboard' %}" class="btn btn-secondary">Bekor</a>
 </form>
 {% endblock %}

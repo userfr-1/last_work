@@ -18,34 +18,6 @@ def register_view(request):
         form = UserRegisterForm()
     return render(request, "auth/register.html", {"form": form})
 
-#
-# def login_view(request):
-#
-#     if request.method == "POST":
-#         form = UserLoginForm(request.POST)
-#         if form.is_valid():
-#             email = form.cleaned_data.get("email")
-#             password = form.cleaned_data.get("password")
-#             user = authenticate(email=email, password=password)
-#
-#             if user is not None:
-#                 login(request, user)
-#                 messages.success(request, f"Xush kelibsiz, {user.email}!")
-#
-#
-#                 if user.is_teacher:
-#                     return redirect("teacher_dashboard")
-#                 elif user.is_student:
-#                     return redirect("student_dashboard")
-#                 elif user.is_admin:
-#                     return redirect("/admin/")
-#             else:
-#                 messages.error(request, "Email yoki parol noto‘g‘ri!")
-#     else:
-#         form = UserLoginForm()
-#
-#     return render(request, "auth/login.html", {"form": form})
-#
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
@@ -83,7 +55,6 @@ def login_view(request):
 
 @login_required
 def logout_view(request):
-    """Tizimdan chiqish"""
     logout(request)
     messages.info(request, "Tizimdan chiqdingiz.")
     return redirect("login")
@@ -193,6 +164,30 @@ def check_homework(request, pk):
 
 
     return render(request, 'teacher/check_homework.html', {'upload': upload})
+
+
+@login_required
+def add_homework(request, lesson_id):
+    lesson = get_object_or_404(Lesson, id=lesson_id)
+
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        deadline = request.POST.get('deadline')
+
+        homework = Homework.objects.create(
+            title=title,
+            description=description,
+            deadline=deadline
+        )
+
+        lesson.homework = homework
+        lesson.save()
+
+        messages.success(request, "Uyga vazifa qo‘shildi!")
+        return redirect('teacher_dashboard')
+
+    return render(request, 'teacher/add_homework.html', {'lesson': lesson})
 
 
 
