@@ -292,12 +292,19 @@ def homework_upload(request, homework_id):
         return redirect('student_dashboard')
     return render(request, 'student/homework_upload.html', {'homework': homework})
 
-
+#
+# @login_required
+# def student_invoice(request):
+#     student = get_object_or_404(Student, user=request.user)
+#     payments = getattr(student, 'payments', []).all() if hasattr(student, 'payments') else []
+#     return render(request, 'student/payments.html', {'payments': payments})
+#
 @login_required
 def student_invoice(request):
     student = get_object_or_404(Student, user=request.user)
-    payments = getattr(student, 'payments', []).all() if hasattr(student, 'payments') else []
+    payments = Payment.objects.filter(invoice__student=student)
     return render(request, 'student/payments.html', {'payments': payments})
+
 
 
 @login_required
