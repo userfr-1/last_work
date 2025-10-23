@@ -23,6 +23,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .forms import UserLoginForm
 
+
+
+
 def login_view(request):
     if request.method == "POST":
         form = UserLoginForm(request.POST)
@@ -234,7 +237,7 @@ def student_dashboard(request):
     student = get_object_or_404(Student, user=request.user)
     groups = student.group.all()
 
-    # Agar student hech bir guruhga biriktirilmagan bo‘lsa:
+
     if not groups.exists():
         messages.warning(request, "Siz hali birorta guruhga biriktirilmagansiz.")
         lessons = []
@@ -292,13 +295,7 @@ def homework_upload(request, homework_id):
         return redirect('student_dashboard')
     return render(request, 'student/homework_upload.html', {'homework': homework})
 
-#
-# @login_required
-# def student_invoice(request):
-#     student = get_object_or_404(Student, user=request.user)
-#     payments = getattr(student, 'payments', []).all() if hasattr(student, 'payments') else []
-#     return render(request, 'student/payments.html', {'payments': payments})
-#
+
 @login_required
 def student_invoice(request):
     student = get_object_or_404(Student, user=request.user)
@@ -319,3 +316,4 @@ def student_resources(request):
     groups = student.group.all()
     lessons = Lesson.objects.filter(group__in=groups)
     return render(request, 'student/resources.html', {'lessons': lessons})
+

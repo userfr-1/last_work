@@ -25,4 +25,4 @@ class Attendance(BaseModel):
 
     def __str__(self):
         return f"{self.student.full_name} - {self.date} - {'P' if self.present else 'A'}"
-#pbkdf2_sha256$iteration$salts$hash
+
